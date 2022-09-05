@@ -14,6 +14,7 @@ def lineBasic(mat,p1,p2):
     c.imshow('Line Basis',mat[::-1])
     c.waitKey(0)
     c.destroyAllWindows()
+    return mat
 
 def incremental(mat,p1, p2):
     m = (p1[1]-p2[1])/(p1[0]-p2[0])
@@ -77,4 +78,15 @@ def bresenham(mat,p1,p2):
     c.imshow('Line bresenham',mat[::-1])
     c.waitKey(0)
     c.destroyAllWindows()
+
+
+def doubleline(mat,p1,p2):
+    mat = lineBasic(mat,p1,p2)
+    mat = lineBasic(mat,[p1[0]+1,p1[1]],[p2[0]+1,p2[1]])
+    mat = lineBasic(mat,[p1[0],p1[1]+1],[p2[0],p2[1]+1])
+    mat = lineBasic(mat, [p1[0]+1,p1[1]+1] , [p2[0]+1,p2[1]+1])
+    c.imshow('Double line',mat[::-1])
+    c.waitKey(0)
+    c.destroyAllWindows()
+    pass
 
