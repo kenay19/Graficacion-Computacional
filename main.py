@@ -1,5 +1,7 @@
 import lines.lines as l 
+import circunference.circunference as c 
 import numpy as np 
+import auxiliar as aux
 
 def menuLines():
     option = "s"
@@ -16,26 +18,64 @@ def menuLines():
         print("5) Metodo de linea doble")
         option = int(input("Escoge una Opcion: "))
         if option == 1:
-            l.lineBasic(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            result = l.lineBasic(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input
+            ("Y2: "))])
+            name = "Linea Basica"
         elif option == 2:
-            l.incremental(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            result = l.incremental(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            name = "Linea Incremental"
         elif option == 3:
-            l.dda(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            result = l.dda(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            name = " Metodo DDA"
         elif option == 4:
-            l.bresenham(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            result = l.bresenham(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            name = "Metodo de Bresenham"
         elif option == 5:
-            l.doubleline(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            result = l.doubleline(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            name = "Metodo de la linea doble"
+        aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Lineas (s/n): ")
-   
+
+def menucircles():
+    option = "s"
+    while option == "s" or option == "S":
+        print("="*50)
+        x = int(input("Da el tamaño en X de la matriz: ")) +1
+        y = int(input("Da el tamaño en Y de la matriz: ")) +1   
+        mat = np.zeros((x, y),np.uint8)
+        print("="*50)
+        print("1) Ocho Puntos")
+        print("2) Circulo Basico")
+        print("3) Circulos de Bresenham")
+        print("4) Circulos de Bresenham Modificado")
+        option = int(input("Escoge una Opcion: "))
+        if option == 1 : 
+            result = c.ochopuntos(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input
+            ("Y2:"))])
+            name="Ocho Puntos"
+        elif option == 2:
+            result = c.BasicCircle(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R: ")))
+            name = "Circulos Basico"
+        elif option == 3:
+            result = c.BersenhamCircles(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
+            name = "Metodo de Bresenham"
+        elif option == 4:
+            result = c.BresenhamCirclesModified(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
+            name = "Metodo de Bresenham modificado"
+        aux.graficmatriz(result, name)
+        option = input("Desea Realizar Otra Operacion de Circulos (s/n): ") 
 
 def chooseOption():
     option = "s"
     while option == "s" or option =="S":
         print("1) Lineas")
+        print("2) Circulos")
         print("="*50)
         option = int(input("Escoge una operacion: "))
         if option == 1:
             menuLines()
+        elif option == 2:
+            menucircles()
         option = input("Desea Realizar Otra Operacion (s/n): ") 
 
 chooseOption()

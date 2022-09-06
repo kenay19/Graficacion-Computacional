@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 29 16:25:31 2022
-
-@author: omarl
-"""
 import cv2 as c
-
 def lineBasic(mat,p1,p2):
     m = (p1[1]-p2[1])/(p1[0]-p2[0])
     for i in range(p1[0],p2[0],1):
@@ -15,17 +8,13 @@ def lineBasic(mat,p1,p2):
     c.waitKey(0)
     c.destroyAllWindows()
     return mat
-
 def incremental(mat,p1, p2):
     m = (p1[1]-p2[1])/(p1[0]-p2[0])
     y = p1[1]
     for x in range(p1[0],p2[0],1):
         mat[x,int(y+0.5)] = 255
         y = y + m 
-    c.imshow('Line incremental',mat[::-1])
-    c.waitKey(0)
-    c.destroyAllWindows()
-
+    return mat
 def dda(mat,p1,p2):
     dx = p1[0] - p2[0]
     dy = p1[1] - p2[1]
@@ -42,10 +31,7 @@ def dda(mat,p1,p2):
         x = x + xInc
         y = y + yInc
         mat[int(x),int(y)] = 255 
-    c.imshow('Line DDA',mat[::-1])
-    c.waitKey(0)
-    c.destroyAllWindows()
-
+    return 
 def bresenham(mat,p1,p2):
     dx = abs(p1[0] - p2[0])
     dy = abs(p1[1] - p2[1])
@@ -75,18 +61,10 @@ def bresenham(mat,p1,p2):
         mat[x,int(y+0.5)]
         i =i+1
         y = y+m
-    c.imshow('Line bresenham',mat[::-1])
-    c.waitKey(0)
-    c.destroyAllWindows()
-
-
+    return mat
 def doubleline(mat,p1,p2):
     mat = lineBasic(mat,p1,p2)
     mat = lineBasic(mat,[p1[0]+1,p1[1]],[p2[0]+1,p2[1]])
     mat = lineBasic(mat,[p1[0],p1[1]+1],[p2[0],p2[1]+1])
     mat = lineBasic(mat, [p1[0]+1,p1[1]+1] , [p2[0]+1,p2[1]+1])
-    c.imshow('Double line',mat[::-1])
-    c.waitKey(0)
-    c.destroyAllWindows()
-    pass
-
+    return mat 
