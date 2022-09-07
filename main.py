@@ -1,5 +1,6 @@
 import lines.lines as l 
 import circunference.circunference as c 
+import elipse.elipse as el
 import numpy as np 
 import auxiliar as aux
 
@@ -65,17 +66,48 @@ def menucircles():
         aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Circulos (s/n): ") 
 
+def menuElpises():
+    option = "s"
+    while option == "s" or option == "S":
+        print("="*50)
+        x = int(input("Da el tamaño en X de la matriz: ")) +1
+        y = int(input("Da el tamaño en Y de la matriz: ")) +1   
+        mat = np.zeros((x, y),np.uint8)
+        print("="*50)
+        print("1) Cuatro Puntos")
+        print("2) Elipse Basico")
+        print("3) Circulos de Bresenham")
+        print("4) Circulos de Bresenham Modificado")
+        option = int(input("Escoge una Opcion: "))
+        if option == 1 : 
+            result = el.fourPoitns(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx: ")), int(input("ry: ")))
+            name="cuatro Puntos"
+        elif option == 2:
+            result = el.basicElipses(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx: ")),int(input("ry: ")))
+            name = "elipse Basico"
+        elif option == 3:
+            result = c.BersenhamCircles(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
+            name = "Metodo de Bresenham"
+        elif option == 4:
+            result = c.BresenhamCirclesModified(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
+            name = "Metodo de Bresenham modificado"
+        aux.graficmatriz(result, name)
+        option = input("Desea Realizar Otra Operacion de Circulos (s/n): ") 
+
 def chooseOption():
     option = "s"
     while option == "s" or option =="S":
         print("1) Lineas")
         print("2) Circulos")
+        print("3) Elipses")
         print("="*50)
         option = int(input("Escoge una operacion: "))
         if option == 1:
             menuLines()
         elif option == 2:
             menucircles()
+        elif option == 3:
+            menuElpises()
         option = input("Desea Realizar Otra Operacion (s/n): ") 
 
 chooseOption()
