@@ -76,8 +76,8 @@ def menuElpises():
         print("="*50)
         print("1) Cuatro Puntos")
         print("2) Elipse Basico")
-        print("3) Circulos de Bresenham")
-        print("4) Circulos de Bresenham Modificado")
+        print("3) Elipse de Bresenham")
+        print("4) Elipse de Bresenham Modificado")
         option = int(input("Escoge una Opcion: "))
         if option == 1 : 
             result = el.fourPoitns(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx: ")), int(input("ry: ")))
@@ -86,11 +86,11 @@ def menuElpises():
             result = el.basicElipses(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx: ")),int(input("ry: ")))
             name = "elipse Basico"
         elif option == 3:
-            result = c.BersenhamCircles(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
-            name = "Metodo de Bresenham"
+            result = el.bresenhamElipse(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx:")), int(input("ry: ")))
+            name = "Elipse de Bresenham"
         elif option == 4:
-            result = c.BresenhamCirclesModified(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("R:")))
-            name = "Metodo de Bresenham modificado"
+            result = el.bresenhamElipseMod(mat,[int(input("X1: ")), int(input("Y1: "))],int(input("rx: ")), int(input("ry: ")))
+            name = "Elipse de Bresenham modificado"
         aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Circulos (s/n): ") 
 
