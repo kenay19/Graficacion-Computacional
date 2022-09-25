@@ -17,6 +17,7 @@ def menuLines():
         print("3) Metodo de DDA")
         print("4) Metodo de Bresenham")
         print("5) Metodo de linea doble")
+        print("6) Cohen-Sutherland linea tipo Clipping")
         option = int(input("Escoge una Opcion: "))
         if option == 1:
             result = l.lineBasic(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input
@@ -34,6 +35,9 @@ def menuLines():
         elif option == 5:
             result = l.doubleline(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
             name = "Metodo de la linea doble"
+        elif option == 6:
+            result = l.recortLine(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
+            name = "Cohen-Sutherland linea tipo Clipping"
         aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Lineas (s/n): ")
 
