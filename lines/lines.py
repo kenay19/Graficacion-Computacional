@@ -131,9 +131,6 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
             x = xmin
         if generateCode(x,ymax,xmin,ymin,xmax,ymax) == "0000":
             y = ymax
-        if generateCode(x,y,xmin,ymin,xmax,ymax) == "0000":
-            x = x 
-            y = y 
     if code == "0001":
         if point == 1:
             y = calculateY(xmin,x1,x2,y1,y2)
@@ -151,9 +148,6 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
             x = xmin
         if generateCode(x,ymin,xmin,ymin,xmax,ymax) == "0000":
             y = ymin
-        if generateCode(x,y,xmin,ymin,xmax,ymax) == "0000":
-            x = x 
-            y = y 
     if code == "0100":
         if point == 1:
             x = calculateX(ymin,x1,x2,y1,y2)
@@ -171,9 +165,6 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
             x = xmax
         if generateCode(x,ymin,xmin,ymin,xmax,ymax) == "0000":
             y = ymin
-        if generateCode(x,y,xmin,ymin,xmax,ymax) == "0000":
-            x = x 
-            y = y 
     if code == "0010":
         if point == 1:
             y = calculateY(xmax,x1,x2,y1,y2)
@@ -191,9 +182,6 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
             x = xmax
         if generateCode(x,ymax,xmin,ymin,xmax,ymax) == "0000":
             y = ymax
-        if generateCode(x,y,xmin,ymin,xmax,ymax) == "0000":
-            x = x 
-            y = y 
     if code == "1000":
         if point == 1:
             x = calculateX(ymax,x1,x2,y1,y2)
