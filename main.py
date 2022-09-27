@@ -37,7 +37,9 @@ def menuLines():
             name = "Metodo de la linea doble"
         elif option == 6:
             result = l.recortLine(mat,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
-            name = "Cohen-Sutherland linea tipo Clipping"
+            name = "Cohen-Sutherland linea tipo Clipping"   
+            result = l.recortLine(result,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])        
+            result = l.recortLine(result,[int(input("X1: ")), int(input("Y1: "))],[int(input("X2: ")), int(input("Y2: "))])
         aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Lineas (s/n): ")
 
@@ -98,12 +100,33 @@ def menuElpises():
         aux.graficmatriz(result, name)
         option = input("Desea Realizar Otra Operacion de Circulos (s/n): ") 
 
+def menuFirstParcial():
+    option = "s"
+    while option == "s" or option == "S":
+        print("="*50)
+        x = int(input("Da el tamaño en X de la matriz: ")) +1
+        y = int(input("Da el tamaño en Y de la matriz: ")) +1   
+        mat = np.zeros((x, y),np.uint8)
+        print("="*50)
+        print("1) Linea")
+        print("2) Poligono")
+        option = int(input("Escoge una Opcion: "))
+        if option == 1:
+            result = l.line(mat)
+            name = "Linea examen primer parcial"
+        if option == 2:
+            result = l.poligono(mat,int(input("Xc: ")),int(input("Yc: ")),int(input("Radio:")),int(input("lados:")))
+            name = "Poligono exame primer parcial"
+        aux.graficmatriz(result, name)
+        option = input("Desea Realizar Otra Operacion de Lineas (s/n): ")
+
 def chooseOption():
     option = "s"
     while option == "s" or option =="S":
         print("1) Lineas")
         print("2) Circulos")
         print("3) Elipses")
+        print("4) Examen Primer Parcial")
         print("="*50)
         option = int(input("Escoge una operacion: "))
         if option == 1:
@@ -112,6 +135,8 @@ def chooseOption():
             menucircles()
         elif option == 3:
             menuElpises()
+        elif option == 4:
+            menuFirstParcial()
         option = input("Desea Realizar Otra Operacion (s/n): ") 
 
 chooseOption()

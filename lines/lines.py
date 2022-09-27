@@ -1,9 +1,6 @@
-from this import d
-from turtle import goto
 import cv2 as c
-import sys 
-sys.path.append("src")
-import auxiliar as aux
+import math as m
+import numpy as np 
 
 def lineBasic(mat,p1,p2):
     m = (p1[1]-p2[1])/(p1[0]-p2[0])
@@ -26,21 +23,21 @@ def incremental(mat,p1, p2):
     return mat
 
 def dda(mat,p1,p2):
-    dx = p1[0] - p2[0]
-    dy = p1[1] - p2[1]
+    dx = p2[0] - p1[0]
+    dy = p2[1] - p1[1]
     if abs(dx) < abs(dy) :
         paso = abs(dy)
     else:
         paso = abs(dx)
     xInc = dx/paso
     yInc = dy/paso
-    mat[p1[0],p1[1]] = 255
+    mat[p1[1],p1[0]] = 255
     x = p1[0] 
     y = p1[1]
     for i in range(paso):
         x = x + xInc
         y = y + yInc
-        mat[int(x),int(y)] = 255 
+        mat[int(y),int(x)] = 255 
     return mat
 
 def bresenham(mat,p1,p2):
@@ -57,7 +54,7 @@ def bresenham(mat,p1,p2):
         x = p1[0]
         y = p1[1]
         xFin = p2[0]
-    mat[x,y] = 255
+    mat[y,x] = 255
     while x < xFin:
         x = x+1 
         if p < 0:
@@ -65,11 +62,11 @@ def bresenham(mat,p1,p2):
         else:
             y = y+1 
             p = p + c2 
-        mat[x,y] = 255
+        mat[y,x] = 255
     m = (p2[1]-p1[1])/(p2[0]-p1[0])
     y = p1[1]
     for i in range(p1[0],p2[0],1):
-        mat[x,int(y+0.5)]
+        mat[int(y+0.5),x]
         i =i+1
         y = y+m
     return mat
@@ -115,7 +112,6 @@ def calculateX(y,x1,x2,y1,y2):
 
 def calculateY(x,x1,x2,y1,y2):
     return int(y1+((x-x1)/(x2-x1))*(y2-y1))
-
 
 def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
     x = 0 
@@ -190,7 +186,6 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
         y = ymax
     return x,y
 
-
 def recortLine(mat,p1,p2):
     xsize,ysize = mat.shape
     xmin = int(input("Da xmin < "+str(xsize) + " : "))
@@ -215,7 +210,43 @@ def recortLine(mat,p1,p2):
             p1 = coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code1,1)
         if not(code2 == "0000"):
             p2 = coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code2,2)
-    mat = incremental(mat,list(p1),list(p2))
+            mat = incremental(mat,list(p1),list(p2))
+    else:
+        mat = mat
     return mat
 
- 
+def line(mat) :
+    b = True
+    xaux = 0 
+    yaux = 0 
+    n = int(input("Introduce el Numero de puntos a graficar: "))
+    for i in range(n):
+        x = int(input("x"+str(i+1)+": "))
+        y = int(input("y"+str(i+1)+": "))
+        if b == True:
+            b = False
+            xaux = x
+            yaux = y 
+        else:
+            mat = dda(mat,[xaux,yaux],[x,y])
+            xaux = x
+            yaux = y 
+    return mat
+
+
+    pass
+
+def poligono(mat,xc,yc,r,l) :
+    alfa = (2*m.pi)/l
+    x = []
+    y = []
+    a = 0 
+    x.append(xc + int(r * np.cos((m.pi/2) - a) +0.5))
+    y.append(yc + int(r* np.sin((-m.pi/2) - a) +0.5))
+    for i in range(1,l):
+        a = a + alfa
+        x.append(xc +m.floor(r * np.cos((m.pi/2) - a) +0.5))
+        y.append(yc + m.floor(r* np.sin((-m.pi/2) - a) +0.5))
+        mat = dda(mat,[x[i-1],y[i-1]],[x[i],y[i]])
+    mat = dda(mat,[x[0],y[0]],[x[l-1],y[l-1]])
+    return mat
