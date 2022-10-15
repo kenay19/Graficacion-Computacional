@@ -1,5 +1,5 @@
 import cv2 as c
-import math as m
+import math as ma
 import numpy as np 
 
 def lineBasic(mat,p1,p2):
@@ -10,34 +10,43 @@ def lineBasic(mat,p1,p2):
     return mat
 
 def incremental(mat,p1, p2):
+    print(p1,p2)
+    if p1[0] == p2[0]:
+        print("a")
+        mat[p1[1]:p2[1],p1[0]] = 255
+    elif p1[1] == p2[1]:
+        print("b")
+        mat[p1[1],p1[0]:p2[0]] = 255
+    else:
+        print("c")
+        m = (p1[1]-p2[1])/(p1[0]-p2[0])
+        y = p1[1]
+        for x in range(p1[0],p2[0]):
+            mat[ma.floor(y+0.5),x] = 255
+            y = y + m 
+    return mat
+
+def dda(mat,p1,p2):
     if p1[0] == p2[0]:
         mat[p1[1]:p2[1],p1[0]] = 255
     elif p1[1] == p2[1]:
         mat[p1[1],p1[0]:p2[0]] = 255
     else:
-        m = (p1[1]-p2[1])/(p1[0]-p2[0])
+        dx = p2[0] - p1[0]
+        dy = p2[1] - p1[1]
+        if abs(dx) < abs(dy) :
+            paso = abs(dy)
+        else:
+            paso = abs(dx)
+        xInc = dx/paso
+        yInc = dy/paso
+        mat[p1[1],p1[0]] = 255
+        x = p1[0] 
         y = p1[1]
-        for x in range(p1[0],p2[0],1):
-            mat[int(y+0.5),x] = 255
-            y = y + m 
-    return mat
-
-def dda(mat,p1,p2):
-    dx = p2[0] - p1[0]
-    dy = p2[1] - p1[1]
-    if abs(dx) < abs(dy) :
-        paso = abs(dy)
-    else:
-        paso = abs(dx)
-    xInc = dx/paso
-    yInc = dy/paso
-    mat[p1[1],p1[0]] = 255
-    x = p1[0] 
-    y = p1[1]
-    for i in range(paso):
-        x = x + xInc
-        y = y + yInc
-        mat[int(y),int(x)] = 255 
+        for i in range(paso):
+            x = x + xInc
+            y = y + yInc
+            mat[int(y),int(x)] = 255 
     return mat
 
 def bresenham(mat,p1,p2):
@@ -114,8 +123,12 @@ def calculateY(x,x1,x2,y1,y2):
     return int(y1+((x-x1)/(x2-x1))*(y2-y1))
 
 def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
-    x = 0 
-    y = 0
+    if point == 1:
+        x =x1
+        y = y1
+    if point == 2:
+        x = x2
+        y = y2 
     if code == "1001":
         if point == 1:
             x = calculateX(ymax,x1,x2,y1,y2)
@@ -186,12 +199,8 @@ def coordantes(x1,x2,y1,y2,xmin,ymin,xmax,ymax,code,point):
         y = ymax
     return x,y
 
-def recortLine(mat,p1,p2):
+def recortLine(mat,p1,p2,xmin,ymin,xmax,ymax):
     xsize,ysize = mat.shape
-    xmin = int(input("Da xmin < "+str(xsize) + " : "))
-    xmax = int(input("Da xmax < "+str(xsize) + " : "))
-    ymin = int(input("Da ymin < "+str(ysize) + " : "))
-    ymax = int(input("Da ymax < "+str(ysize) + " : "))
     mat = incremental(mat,[xmin,ymin],[xmax,ymin])
     mat = incremental(mat,[xmin,ymax],[xmax,ymax])
     mat = incremental(mat,[xmin,ymin],[xmin,ymax])
@@ -237,16 +246,62 @@ def line(mat) :
     pass
 
 def poligono(mat,xc,yc,r,l) :
-    alfa = (2*m.pi)/l
+    alfa = (2*ma.pi)/l
     x = []
     y = []
     a = 0 
-    x.append(xc + int(r * np.cos((m.pi/2) - a) +0.5))
-    y.append(yc + int(r* np.sin((-m.pi/2) - a) +0.5))
+    x.append(xc + int(r * np.cos((ma.pi/2) - a) +0.5))
+    y.append(yc + int(r* np.sin((-ma.pi/2) - a) +0.5))
     for i in range(1,l):
         a = a + alfa
-        x.append(xc +m.floor(r * np.cos((m.pi/2) - a) +0.5))
-        y.append(yc + m.floor(r* np.sin((-m.pi/2) - a) +0.5))
+        x.append(xc +ma.floor(r * np.cos((ma.pi/2) - a) +0.5))
+        y.append(yc + ma.floor(r* np.sin((-ma.pi/2) - a) +0.5))
         mat = dda(mat,[x[i-1],y[i-1]],[x[i],y[i]])
     mat = dda(mat,[x[0],y[0]],[x[l-1],y[l-1]])
     return mat
+
+def recortLineHodgman(mat):
+    xmin = int(input("xmin: "))
+    xmax = int(input("xmax: "))
+    ymin = int(input("ymin: "))
+    ymax = int(input("ymax: "))
+    mat = dda(mat,[xmin,ymin],[xmax,ymin])
+    mat = dda(mat,[xmin,ymax],[xmax,ymax])
+    mat = dda(mat,[xmin,ymin],[xmin,ymax])
+    mat = dda(mat,[xmax,ymin],[xmax,ymax])
+    n = int(input("Numero de puntos: "))
+    points = []
+    codes = []
+    for i in range(n):
+        xaux = int(input("X"+str(i)+": "))
+        yaux = int(input("Y"+str(i)+": "))
+        codes.append(generateCode(xaux, yaux,xmin,ymin,xmax,ymax))
+        points.append([xaux,yaux])
+    print(points)
+    print(codes )
+    vertices = []
+    for i in range(len(points)):
+        p1 = points[i]
+        pant = points[i-1]
+        if i == len(points) - 1:
+            pdes = points[0]
+        else:
+            pdes = points[i+1]
+        line1 = coordantes(p1[0],pant[0],p1[1],pant[1],xmin,ymin,xmax,ymax,codes[i],1)
+        line2 = coordantes(p1[0],pdes[0],p1[1],pdes[1],xmin,ymin,xmax,ymax,codes[i],1)
+        if not(compareList(vertices,line1)):
+            vertices.append(line1)
+        if not(compareList(vertices,line2)):
+            vertices.append(line2)
+    print(vertices)
+    mat = dda(mat,vertices[0],vertices[-1])
+    for i in range(1,len(vertices)):
+        mat = dda(mat,vertices[i-1],vertices[i])
+    mat = dda(mat,vertices[len(vertices)-2],vertices[len(vertices)-1])
+    return mat
+
+def compareList(lista,element):
+    for i in range(len(lista)):
+        if lista[i] == element:
+            return True
+    return False
